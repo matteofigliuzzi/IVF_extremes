@@ -2,27 +2,29 @@
 
 ## 1 Overview
 
-Python package to analyze IVF clinical data, helping identifying infertile women and characterizing the following infertility 
-endophenotypes:
+Python package to analyze IVF clinical data, helping in the idenfication of infertile women and in the characterizatio
+of the following infertility endophenotypes:
 
-- **IFR**: low fertilization rates 
 - **LMR**: low oocyte maturity rate
+- **IFR**: low fertilization rates 
 - **PDA**: preimplantation developmental arrest
 
-Extreme phenotypes are identified by performing one tailed-Binomial hypothesis tests of IVF clinical outcomes.
+Extreme phenotypes are identified comparing individual outcomes in terms of oocyte maturation rate,
+oocyte fertilization rate, and blastocyst production rate with typical rates observed in a reference population. 
+and performing one tailed-Binomial hypothesis tests of IVF cycles outcomes.
 
 The following paper provides an overview of the statistical model used, and an exemplary application.
-If using the 
-Ref to publication:
 
 Capalbo et al. "Genomics analysis of maternal exomes reveals new candidate genes and pathways for the diagnosis of oocyte maturation 
 arrest and early embryonic developmental arrest in IVF" 2021
 
-We ask that you cite this paper if you use the package in work that leads to publication. 
+Please cite this paper if you use the package in work that leads to publication. 
 
 ## 2 Installation
 
 ### 2.1 Pip installation
+
+IVF_extremes package can be installed directly from pip:
 
 ```console
 $ pip install IVF_extremes
@@ -67,7 +69,7 @@ using the following headers:
 - Patient_ID: Unique identifier for the patient
 - Cycle_ID: Unique identifier for the IVF cycle
 - Age: Age of the patient at the time of oocyte pick-up
-- COC: number of COC oocytes
+- COC: number of oocyte cumulus complexes
 - MII: number of mature oocytes
 - Fertilized: number of fertilized oocytes
 - Blastocysts: number of developed blastocysts
@@ -101,7 +103,7 @@ or
 $ IVF_extremes -i data/Sample_IVF_data.csv
 ```
 
-This executes the analysis on the sample data in the data folder.
+Either of these scripts executes the analysis on the sample data in the data folder.
 
 ## 4 Development
 
