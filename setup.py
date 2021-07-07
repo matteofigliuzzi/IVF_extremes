@@ -4,7 +4,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='IVF_extremes',
-      version='1.0',
+      version='0.1',
       packages=['IVF_extremes'],
       #py_modules=['main'],
       author='Matteo Figliuzzi',
