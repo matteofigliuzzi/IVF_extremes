@@ -1,5 +1,5 @@
 import pandas as pd
-from IVF_cycles_analyzer.IVF_func import *
+from IVF_extremes.IVF_func import *
 import os
 
 
