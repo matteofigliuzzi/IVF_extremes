@@ -3,6 +3,7 @@ import unittest
 import IVF_extremes
 
 out_test_folder = 'out_test'
+data_path = '../data/Sample_IVF_data.csv'
 
 class TestIVF(unittest.TestCase):
 
@@ -15,15 +16,13 @@ class TestIVF(unittest.TestCase):
         os.rmdir(out_test_folder)
 
     def test_IVF_nobaseline(self):
-        filename='data/Sample_IVF_data.csv'
-        df_outliers = IVF_extremes.main(filename,out_path=out_test_folder)
+        df_outliers = IVF_extremes.main(data_path,out_path=out_test_folder)
         outliers = list(df_outliers.Patient_ID.unique())
         expected_outlier = [9,15,16,29,40,44,47,52,55,67,76,79,86]
         self.assertEqual(outliers,  expected_outlier)
 
     def test_IVF_baseline(self):
-        filename='data/Sample_IVF_data.csv'
-        df_outliers = IVF_extremes.main(filename,out_path=out_test_folder,estimate_baseline=True)
+        df_outliers = IVF_extremes.main(data_path,out_path=out_test_folder,estimate_baseline=True)
         outliers = list(df_outliers.Patient_ID.unique())
         expected_outlier = [9, 13, 15, 51, 53, 55, 67, 76, 79, 86]
         self.assertEqual(outliers,  expected_outlier)

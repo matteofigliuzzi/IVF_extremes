@@ -115,5 +115,6 @@ $ pip install -e .
 To run the unit tests:
 
 ```console
-python -m test discover
+$ cd IVF_extremes
+$ python -m test discover
 ```
