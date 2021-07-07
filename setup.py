@@ -14,5 +14,5 @@ setup(name='IVF_extremes',
         "console_scripts": [
             "IVF_extremes=IVF_extremes.main:CLI_main"
         ]},
-      data_files=['data/Sample_IVF_data.csv','requirements.txt']
+      data_files=['data/Sample_IVF_data.csv','requirements.txt','test']
       )
