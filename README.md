@@ -28,24 +28,39 @@ We ask that you cite this paper if you use the package in work that leads to pub
 $ pip install IVF_extremes
 ```
 
-### 2.2 Conda installation?
+### 2.2 Conda installation
+
+Not available yet
 
 ## 3 Usage
 
-In its simplest operation, IVF_extremes requires only one input: a csv file with IVF clinical data to be analyzed 
+In its simplest operation, IVF_extremes requires just one input: a csv file with IVF clinical data to be analyzed 
 (see: Input Data Format)
 
 ```console
-$ IVF_extremes input.csv
+$ IVF_extremes -i input.csv
 ```
 
-### 3.1 Options
+To estimate baseline rates from the input dataset, type:
 
 ```console
-$ IVF_extremes input.csv --no-baseline
+$ IVF_extremes -i input.csv -e
 ```
 
-### 3.2 Input Data Format 
+To provide custom IVF outcomes rates, type:
+
+```console
+$ IVF_extremes -i data/Sample_IVF_data.csv --om_rate 0.9```
+```
+
+To check all available options, type:
+
+```console
+$ IVF_extremes --help
+```
+
+
+### 3.1 Input Data Format 
 
 Input data must be in csv format, each line representing the outcome of an IVF cycle, 
 using the following headers:
@@ -68,12 +83,16 @@ Example data:
 |3|4|31|5|4|3|0|
 
 
-### 3.3 Examples
+### 3.2 Examples
 
-Once the package is installed, run the following script:
+Once the package is installed, run the following scripts:
 
 ```console
 $ python sample_script.py
+```
+
+```console
+$ IVF_extremes -i data/Sample_IVF_data.csv
 ```
 
 This execute the analysis on the sample data in the data folder.
@@ -93,4 +112,8 @@ To install the package locally
 $ pip install -e .
 ```
 
-https://python-packaging.readthedocs.io/en/latest/minimal.html
+To run the unit tests:
+
+```console
+python -m test discover
+```

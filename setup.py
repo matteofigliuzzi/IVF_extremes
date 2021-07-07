@@ -4,7 +4,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='IVF_extremes',
-      version='0.2',
+      version='0.0.3',
       packages=['IVF_extremes'],
       #py_modules=['main'],
       author='Matteo Figliuzzi',
@@ -12,7 +12,7 @@ setup(name='IVF_extremes',
       install_requires=required,
       entry_points={
         "console_scripts": [
-            "IVF_extremes=IVF_extremes.main:main"
+            "IVF_extremes=IVF_extremes.main:CLI_main"
         ]},
       data_files=['data/Sample_IVF_data.csv','requirements.txt']
       )
