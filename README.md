@@ -82,20 +82,26 @@ Example data:
 |2|3|29|5|4|4|1|
 |3|4|31|5|4|3|0|
 
+An example data file is in the github repository:
+
+https://github.com/matteofigliuzzi/IVF_extremes/blob/master/data/Sample_IVF_data.csv
+
 
 ### 3.2 Examples
 
-Once the package is installed, run the following scripts:
+Once the package is installed, download the example data file and run the following scripts:
 
 ```console
 $ python sample_script.py
 ```
 
+or
+
 ```console
 $ IVF_extremes -i data/Sample_IVF_data.csv
 ```
 
-This execute the analysis on the sample data in the data folder.
+This executes the analysis on the sample data in the data folder.
 
 ## 4 Development
 
