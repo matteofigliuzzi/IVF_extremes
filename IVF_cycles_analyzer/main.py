@@ -1,0 +1,87 @@
+import pandas as pd
+from scipy import stats
+from scipy.interpolate import interp1d
+import os
+
+
+def main(input_file, out_path='IVF_outliers', estimate_baseline=True, OM_rate=0.8, OF_rate=0.8, B_rate_age={18:0.8,50:0.2}, pvalue_th=None):
+    ""
+    # 1 parse input data and aggregate by patient ID
+    df_IVF = pd.read_csv(input_file)
+    df_patients = df_IVF.groupby(['Patient_ID', 'Age'])[['COC', 'MII', 'Fertilized', 'Blastocysts']].sum().reset_index()
+    # 2 estimate baseline data if not provided
+    if estimate_baseline:
+        OM_rate, OF_rate, B_rate_age = estimate_baseline_rate(df_patients)
+    # 3 compute pvalues
+    df_pvalues = compute_pvalues(df_patients, OM_rate, OF_rate, B_rate_age)
+    # 4 identify outliers
+    df_outliers = find_IVF_outliers(df_pvalues, pvalue_th)
+    # 5 output results
+    os.makedirs(out_path, exist_ok=True)
+    df_pvalues.to_csv(os.path.join(out_path, 'IVF_pvalues.csv'), index=False)
+    df_outliers.to_csv(os.path.join(out_path, 'IVF_outliers.csv'), index=False)
+
+
+def estimate_baseline_rate(df_patients):
+    ""
+    OM_rate = (df_patients['MII'] / df_patients['COC']).mean()
+    OF_rate = (df_patients['Fertilized'] / df_patients['MII']).mean()
+    fert_age = df_patients.groupby('Age')['Fertilized'].sum()
+    bla_age = df_patients.groupby('Age')['Blastocysts'].sum()
+    B_rate_age = ( bla_age / fert_age ).to_dict()
+    return OM_rate, OF_rate, B_rate_age
+
+
+def compute_pvalues(df_protocol, OM_rate, OF_rate, B_rate_age):
+    ""
+    for i in range(len(df_protocol)):
+        Patient_ID = df_protocol.loc[i, 'Patient_ID']
+        n_coc = df_protocol.loc[i, 'COC']
+        n_mII = df_protocol.loc[i, 'MII']
+        n_fert = df_protocol.loc[i, 'Fertilized']
+        n_bla = df_protocol.loc[i, 'Blastocysts']
+        age = df_protocol.loc[i, 'Age']
+        x = list(B_rate_age.keys())
+        y = list(B_rate_age.values())
+        func_age = interp1d(x, y)
+        B_rate = func_age(age)
+        #B_rate = B_rate_age[age]
+        try:
+            if (n_coc < n_mII) | (n_mII < n_fert) | (n_fert < n_bla):
+                raise ValueError
+            p_LFR, p_LMR, p_PDA = IVF_binomial_tests(n_coc, n_mII, n_fert, n_bla, OM_rate, OF_rate, B_rate)
+        except:
+            print("Inconsistent IVF values for Patient ID {}: coc={}, mII={}, fert={}, bla={}".format(Patient_ID, n_coc,n_mII, n_fert,n_bla))
+            p_LFR, p_LMR, p_PDA = None, None, None
+        df_protocol.loc[i, 'pvalue_LFR'] = p_LFR
+        df_protocol.loc[i, 'pvalue_LMR'] = p_LMR
+        df_protocol.loc[i, 'pvalue_PDA'] = p_PDA
+    # df_protocols.to_csv(os.join(out_path,'.pvalues.csv'))
+    return df_protocol
+
+
+def IVF_binomial_tests(coc, mII, fert, bla, OM_rate, OF_rate, B_rate):
+    "binomial tests to estimate probabilities of IVF outcome"
+    p_LMR = stats.binom_test(x=mII, n=coc, p=OM_rate, alternative='less')
+    p_LFR = stats.binom_test(x=fert, n=mII, p=OF_rate, alternative='less')
+    p_PDA = stats.binom_test(x=bla, n=fert, p=B_rate, alternative='less')
+    return p_LFR, p_LMR, p_PDA
+
+
+def find_IVF_outliers(df_protocol, pvalue_th):
+    ""
+    if pvalue_th is None:
+        pvalue_th = 0.05 / df_protocol.shape[1]  # bonferroni correction
+    df_protocol['LMR_outlier'] = df_protocol['pvalue_LMR'] < pvalue_th
+    df_protocol['LFR_outlier'] = df_protocol['pvalue_LFR'] < pvalue_th
+    df_protocol['PDA_outlier'] = df_protocol['pvalue_PDA'] < pvalue_th
+    df_outliers = df_protocol[
+        (df_protocol['LMR_outlier']) | (df_protocol['LFR_outlier']) | (df_protocol['PDA_outlier'])]
+    print('find outliers: {}'.format(df_outliers[['Patient_ID','Age']]))
+    return df_outliers[['Patient_ID', 'LMR_outlier', 'LFR_outlier', 'PDA_outlier']]
+
+
+if __name__ == '__main__':
+    print_hi('PyCharm')
+
+
