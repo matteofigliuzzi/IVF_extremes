@@ -23,7 +23,7 @@ def compute_pvalues(df_protocol, OM_rate, OF_rate, B_rate_age):
         age = df_protocol.loc[i, 'Age']
         x = list(B_rate_age.keys())
         y = list(B_rate_age.values())
-        func_age = interp1d(x, y)
+        func_age = interp1d(x, y, fill_value=(max(y),min(y)),bounds_error=False)
         B_rate = func_age(age)
         p_LMR, p_LFR, p_PDA = IVF_binomial_tests(n_coc, n_mII, n_fert, n_bla, OM_rate, OF_rate, B_rate, Patient_ID)
         df_protocol.loc[i, 'pvalue_LFR'] = p_LFR

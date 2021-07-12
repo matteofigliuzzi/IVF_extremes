@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='IVF_extremes',
-      version='0.0.14',
+      version='0.0.15',
       #packages=['IVF_extremes','IVF_extremes/test'],
       packages = find_packages(),
       package_data = {'': ['*.csv']},
