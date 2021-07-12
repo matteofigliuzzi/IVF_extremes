@@ -28,7 +28,7 @@ def single_check(num_cocs, num_mature_oocytes, num_fertlized_oocytes, num_blast,
     # 1 parse input data and aggregate by patient ID
     logging.info('\n*** IVF_extremes: analysis started\n')
     baseline_rate = pd.read_csv(os.path.join(resources_dir,'baseline_rates.csv'),index_col='Female Age')
-    B_rate = baseline_rate['BR'].iloc[age]
+    B_rate = baseline_rate['BR'].loc[age]
     OM_rate = baseline_rate['OMR'].mean()
     OF_rate = baseline_rate['OFR'].mean()
     logging.info('   Baseline Maturation Rate={:.2f},\n   Baseline Fertilization Rate={:.2f},'

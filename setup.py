@@ -5,10 +5,10 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='IVF_extremes',
-      version='0.0.11',
+      version='0.0.14',
       #packages=['IVF_extremes','IVF_extremes/test'],
       packages = find_packages(),
-      #package_data = {'': ['*.csv']},
+      package_data = {'': ['*.csv']},
       author='Matteo Figliuzzi',
       author_email='matteo.figliuzzi@igenomix.com',
       install_requires=required,
