@@ -2,7 +2,7 @@
 
 ## 1 Overview
 
-Python package to analyze IVF clinical data, helping in the idenfication of infertile women and in the characterizatio
+Python package to analyze IVF clinical data, helping in the idenfication of infertile women and in the characterization
 of the following infertility endophenotypes:
 
 - **LMR**: low oocyte maturity rate
@@ -36,24 +36,24 @@ Not available yet
 
 ## 3 Usage
 
-In its simplest operation, IVF_extremes requires just one input: a csv file with IVF clinical data to be analyzed 
-(see: Input Data Format)
+### 3.1 Single Case Processing
+
+
+In its simplest operation, IVF_extremes processes IVF data from a single patient,
+it compares the data with IVF typical outcomes, and provides a classification of the patient (and pvalues related to 
+hypothesis tests). The analysis requires 5 inputs:
 
 ```console
-$ IVF_extremes -i input.csv
+$ IVF_extremes --coc num_coc --mii num_mii --fert num_fert --blast num_blast --age age
 ```
 
-To estimate baseline rates from the input dataset, type:
+where num_coc, num_mii, num_fert and num_blast are not negative integer representing the total number 
+of cocs, mature oocytes, fertilized oocytes and blastocysts, and age is the age of the patient, eg:
 
 ```console
-$ IVF_extremes -i input.csv -e
+$ IVF_extremes --coc 11 --mii 4 --fert 2 --blast 0 --age 38
 ```
 
-To provide custom IVF outcomes rates, type:
-
-```console
-$ IVF_extremes -i data/Sample_IVF_data.csv --om_rate 0.9```
-```
 
 To check all available options, type:
 
@@ -61,10 +61,37 @@ To check all available options, type:
 $ IVF_extremes --help
 ```
 
+### 3.2 Batch processing
 
-### 3.1 Input Data Format 
+Is it possible to analyze data from multiple patients using the following command:
 
-Input data must be in csv format, each line representing the outcome of an IVF cycle, 
+```console
+$ IVF_extremes_batch -i input.csv
+```
+
+where input.csv is a csv file with IVF clinical data to be analyzed (see: Input Data Format).
+
+To estimate baseline rates from the input dataset, type:
+
+```console
+$ IVF_extremes_batch -i input.csv -e
+```
+
+To provide custom IVF outcomes rates, type:
+
+```console
+$ IVF_extremes_batch -i data/Sample_IVF_data.csv --om_rate 0.9```
+```
+
+To check all available options, type:
+
+```console
+$ IVF_extremes_batch --help
+```
+
+#### 3.2.1 Input Data Format 
+
+For the case of batch processing input data must be in csv format, each line representing the outcome of an IVF cycle, 
 using the following headers:
 - Patient_ID: Unique identifier for the patient
 - Cycle_ID: Unique identifier for the IVF cycle
@@ -89,7 +116,7 @@ An example data file is in the github repository:
 https://github.com/matteofigliuzzi/IVF_extremes/blob/master/data/Sample_IVF_data.csv
 
 
-### 3.2 Examples
+#### 3.2.2 Batch analysis example
 
 Once the package is installed, download the example data file and run the following scripts:
 
@@ -100,7 +127,7 @@ $ python sample_script.py
 or
 
 ```console
-$ IVF_extremes -i data/Sample_IVF_data.csv
+$ IVF_extremes_batch -i data/Sample_IVF_data.csv
 ```
 
 Either of these scripts executes the analysis on the sample data in the data folder.

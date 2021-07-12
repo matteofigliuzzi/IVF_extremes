@@ -14,10 +14,10 @@ import os
 @click.option('--of_rate', default=0.8, show_default=True, help='Baseline Oocyte Fertilization Rate')
 @click.option('--blast_rate', default=0.6, show_default=True, help='Baseline Blastocyst Production Rate')
 @click.option('--pvalue_th', help='Pvalue threshold for outliers')
-def CLI_main(input_file, out_path='output_IVF_extremes', estimate_baseline=False, om_rate=0.8, of_rate=0.8, blast_rate=0.6, pvalue_th=None):
-    main(input_file, out_path, estimate_baseline, om_rate, of_rate, blast_rate,pvalue_th)
+def CLI_batch(input_file, out_path='output_IVF_extremes', estimate_baseline=False, om_rate=0.8, of_rate=0.8, blast_rate=0.6, pvalue_th=None):
+    batch_check(input_file, out_path, estimate_baseline, om_rate, of_rate, blast_rate, pvalue_th)
 
-def main(input_file, out_path='output_IVF_extremes', estimate_baseline=False, om_rate=0.8, of_rate=0.8, blast_rate=0.6, pvalue_th=None):
+def batch_check(input_file, out_path='output_IVF_extremes', estimate_baseline=False, om_rate=0.8, of_rate=0.8, blast_rate=0.6, pvalue_th=None):
     """IVF-extremes
 
     Analyze IVF clinical data and identify phenotypic extremes"""
@@ -53,7 +53,7 @@ def main(input_file, out_path='output_IVF_extremes', estimate_baseline=False, om
     return df_outliers
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == '__batch_check__':
+    batch_check()
 
 

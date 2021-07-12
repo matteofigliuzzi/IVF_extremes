@@ -16,13 +16,13 @@ class TestIVF(unittest.TestCase):
         os.rmdir(out_test_folder)
 
     def test_IVF_nobaseline(self):
-        df_outliers = IVF_extremes.main(data_path,out_path=out_test_folder)
+        df_outliers = IVF_extremes.batch_check(data_path,out_path=out_test_folder)
         outliers = list(df_outliers.Patient_ID.unique())
         expected_outlier = [9,15,16,29,40,44,47,52,55,67,76,79,86]
         self.assertEqual(outliers,  expected_outlier)
 
     def test_IVF_baseline(self):
-        df_outliers = IVF_extremes.main(data_path,out_path=out_test_folder,estimate_baseline=True)
+        df_outliers = IVF_extremes.batch_check(data_path,out_path=out_test_folder,estimate_baseline=True)
         outliers = list(df_outliers.Patient_ID.unique())
         expected_outlier = [9, 13, 15, 51, 53, 55, 67, 76, 79, 86]
         self.assertEqual(outliers,  expected_outlier)

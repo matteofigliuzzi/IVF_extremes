@@ -25,25 +25,29 @@ def compute_pvalues(df_protocol, OM_rate, OF_rate, B_rate_age):
         y = list(B_rate_age.values())
         func_age = interp1d(x, y)
         B_rate = func_age(age)
-        try:
-            if (n_coc < n_mII) | (n_mII < n_fert) | (n_fert < n_bla):
-                logging.warning("Inconsistent IVF values for Patient ID {}: coc={}, mII={}, fert={}, bla={}".format(Patient_ID, n_coc,n_mII, n_fert,n_bla))
-                raise ValueError
-            p_LFR, p_LMR, p_PDA = IVF_binomial_tests(n_coc, n_mII, n_fert, n_bla, OM_rate, OF_rate, B_rate)
-        except:
-            p_LFR, p_LMR, p_PDA = None, None, None
+        p_LMR, p_LFR, p_PDA = IVF_binomial_tests(n_coc, n_mII, n_fert, n_bla, OM_rate, OF_rate, B_rate, Patient_ID)
         df_protocol.loc[i, 'pvalue_LFR'] = p_LFR
         df_protocol.loc[i, 'pvalue_LMR'] = p_LMR
         df_protocol.loc[i, 'pvalue_PDA'] = p_PDA
     return df_protocol
 
 
-def IVF_binomial_tests(coc, mII, fert, bla, OM_rate, OF_rate, B_rate):
+def IVF_binomial_tests(coc, mII, fert, bla, OM_rate, OF_rate, B_rate, Patient_ID=''):
     "Binomial tests to estimate probabilities of IVF outcome"
-    p_LMR = stats.binom_test(x=mII, n=coc, p=OM_rate, alternative='less')
-    p_LFR = stats.binom_test(x=fert, n=mII, p=OF_rate, alternative='less')
-    p_PDA = stats.binom_test(x=bla, n=fert, p=B_rate, alternative='less')
-    return p_LFR, p_LMR, p_PDA
+
+    try:
+        if (coc < mII) | (mII < fert) | (fert < bla):
+            logging.warning(
+                "Inconsistent IVF values for Patient_ID={}: coc={}, mII={}, fert={}, bla={}".format(Patient_ID, coc,
+                                                                                                    mII, fert,bla))
+            raise ValueError
+        p_LMR = stats.binom_test(x=mII, n=coc, p=OM_rate, alternative='less')
+        p_LFR = stats.binom_test(x=fert, n=mII, p=OF_rate, alternative='less')
+        p_PDA = stats.binom_test(x=bla, n=fert, p=B_rate, alternative='less')
+    except:
+        p_LMR, p_LFR, p_PDA = None, None, None
+
+    return p_LMR, p_LFR, p_PDA
 
 
 def find_IVF_outliers(df_protocol, pvalue_th):
