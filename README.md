@@ -2,8 +2,8 @@
 
 ## 1 Overview
 
-Python package to analyze IVF clinical data, helping in the idenfication of infertile women and in the characterization
-of the following infertility endophenotypes:
+Python package to analyze IVF clinical data, to identify infertile women 
+and to characterize the following infertility endophenotypes:
 
 - **LMR**: low oocyte maturity rate
 - **IFR**: low fertilization rates 
