@@ -6,7 +6,7 @@ Python package to analyze IVF clinical data, to identify infertile women
 and to characterize the following infertility endophenotypes:
 
 - **LMR**: low oocyte maturity rate
-- **IFR**: low fertilization rates 
+- **LFR**: low fertilization rates 
 - **PDA**: preimplantation developmental arrest
 
 Extreme phenotypes are identified comparing individual outcomes in terms of oocyte maturation rate,
