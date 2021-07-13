@@ -57,7 +57,7 @@ def single_check(num_cocs, num_mature_oocytes, num_fertlized_oocytes, num_blast,
     return
 
 
-if __name__ == '__single_check__':
-    single_check()
+if __name__ == '__main__':
+    CLI_single_check()
 
 
